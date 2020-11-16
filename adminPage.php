@@ -25,6 +25,7 @@
 </head>
 <body>  
     <?php
+      require_once 'connection.php'; //
       // Переменные с формы
     if(isset($_POST['name'])){
           $name = $_POST['name'];
@@ -33,11 +34,11 @@
           $schedule = $_POST['schedule'];
     }
 
-    $link = mysqli_connect("localhost", "root", "", "web_mid");
+    $link = mysqli_connect($host, $user, $password, $database);
 
-        $query_users = mysqli_query($link,"SELECT * FROM users");
+        $query_users = mysqli_query($link,"SELECT * FROM job_seeker");
     
-        $query_jobs = mysqli_query($link,"SELECT * FROM job");
+        $query_jobs = mysqli_query($link,"SELECT * FROM company");
     
         $data_u = mysqli_fetch_assoc($query_users);
         $data_j = mysqli_fetch_assoc($query_jobs);
@@ -129,9 +130,8 @@
       <thead>
         <tr>
           <th scope="col">#</th>
-          <th scope="col">Full name</th>
-          <th scope="col">Telephone</th>
-          <th scope="col">Job type</th>
+          <th scope="col">NAME</th>
+          <th scope="col">TELEPHONE</th>
           <th scope="col">E-email</th>
           <th scope="col">Details</th>
         </tr>
@@ -140,15 +140,13 @@
                 do{ 
                     echo "<tr>";
                     echo "<td>".$data_u['id'].'</td>';
-                    echo "<td>".$data_u['full_name']."</td>";
-                    echo "<td>".$data_u['number']."</td>";
-                    echo "<td>".$data_u['job']."</td>";
+                    echo "<td>".$data_u['name']."</td>";
+                    echo "<td>".$data_u['tel_number']."</td>";
                     echo "<td>".$data_u['email']."</td>";
                     echo "<td><button class='btn btn-info'>Details</button></td>";
                     echo "</tr>";
                 }
                 while ($data_u = mysqli_fetch_assoc($query_users));
-          
             ?>
     </table>
 

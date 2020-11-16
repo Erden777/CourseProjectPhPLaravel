@@ -25,7 +25,7 @@
 </head>
 <body>
 
-changes
+
         <?php
     
       // Переменные с формы
@@ -35,18 +35,16 @@ changes
         }
 
 
-
-
       // Параметры для подключения
       $db_host = "localhost"; 
       $db_user = "root"; // Логин БД
       $db_password = ""; // Пароль БД
-      $db_base = 'web_mid'; // Имя БД
-      $db_table = "users"; // Имя Таблицы БД
+      $db_base = 'studentsgraduates'; // Имя БД
+      $db_table = "job_seeker"; // Имя Таблицы БД
 
       // Подключение к базе данных
       $mysqli = new mysqli($db_host, $db_user, $db_password, $db_base);
-      $link = mysqli_connect("localhost", "root", "", "web_mid");
+      $link = mysqli_connect("localhost", "root", "", "studentsgraduates");
 
       // Если есть ошибка соединения, выводим её и убиваем подключение
       if ($mysqli->connect_error) {
@@ -56,11 +54,11 @@ changes
         if(!empty($_POST['email']) && !empty($_POST['pass']))
         {
             // Вытаскиваем из БД запись, у которой логин равняеться введенному
-            $query = mysqli_query($link,"SELECT id, email, pass FROM users WHERE email='".mysqli_real_escape_string($link,$_POST['email'])."' LIMIT 1");
+            $query = mysqli_query($link,"SELECT id, email, password FROM job_seeker WHERE email='".mysqli_real_escape_string($link,$_POST['email'])."' LIMIT 1");
             $data = mysqli_fetch_assoc($query);
 
             // Сравниваем пароли
-            if($data['pass'] == ($_POST['pass']))
+            if($data['password'] == ($_POST['pass']))
             {
                 // Ставим куки
                 setcookie("user_id", $data['id'], time()+60*60*24*30, "/");

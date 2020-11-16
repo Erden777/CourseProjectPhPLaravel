@@ -108,36 +108,37 @@
 	<p class="divider-text" style="text-align: center">
         <span class="bg-light">OR</span>
     </p>
-	<form>
+	<form method="post" action="exx.php" >
 	<div class="form-group input-group">
 		<div class="input-group-prepend">
 		    <span class="input-group-text"> <i class="fa fa-user"></i> </span>
 		 </div>
-        <input name="" class="form-control" placeholder="Full name" type="text">
+        <input name="name" class="form-control" placeholder="Name" type="text">
     </div> 
     <div class="form-group input-group">
     	<div class="input-group-prepend">
 		    <span class="input-group-text"> <i class="fa fa-envelope"></i> </span>
 		 </div>
-        <input name="" class="form-control" placeholder="Email address" type="email">
+        <input name="email" class="form-control" placeholder="Email address" type="email">
+    </div> 
+    <div class="form-group input-group">
+      <div class="input-group-prepend">
+        <span class="input-group-text"> <i class="fa fa-envelope"></i> </span>
+     </div>
+        <input name="country" class="form-control" placeholder="country" type="text">
     </div> 
     <div class="form-group input-group">
     	<div class="input-group-prepend">
 		    <span class="input-group-text"> <i class="fa fa-phone"></i> </span>
 		</div>
-		<select class="custom-select" style="max-width: 80px; margin-left: 0">
-		    <option selected="">+705</option>
-		    <option value="1">+777</option>
-		    <option value="2">+747</option>
-		    <option value="3">+702</option>
-		</select>
-    	<input name="" class="form-control" placeholder="Phone number" type="text">
+	
+    	<input name="number" class="form-control" placeholder="Phone number" type="text">
     </div> 
     <div class="form-group input-group">
     	<div class="input-group-prepend">
 		    <span class="input-group-text"> <i class="fa fa-building"></i> </span>
 		</div>
-		<select class="form-control" style="margin-left: 0">
+		<select class="form-control" style="margin-left: 0" name="job_type">
 			<option disabled selected>Select job type</option>
 			<option>Designer</option>
 			<option>Manager</option>
@@ -148,13 +149,13 @@
     	<div class="input-group-prepend">
 		    <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
 		</div>
-        <input class="form-control" placeholder="Create password" type="password">
+        <input class="form-control" placeholder="Create password" name="password" type="password">
     </div> <!-- form-group// -->
     <div class="form-group input-group">
     	<div class="input-group-prepend">
 		    <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
 		</div>
-        <input class="form-control" placeholder="Repeat password" type="password">
+        <input class="form-control" placeholder="Repeat password" name="repassword" type="password">
     </div> <!-- form-group// -->                                      
     <div class="form-group">
         <button type="submit" class="btn btn-primary btn-block"> Create Account  </button>
