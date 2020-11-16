@@ -1,0 +1,154 @@
+body{
+	background-color: #EFF3F8;
+}
+
+
+.navbar-fixed-top {
+    min-height: 780px;
+}
+
+a{
+	color: white;
+	text-decoration: none;
+
+}
+.nav-fill .nav-link:hover{
+	color: white;
+	background-color: #282923;
+}
+
+
+.new{
+
+	background-color: red;
+}
+
+.view{
+	background:url('../img/entry-level2.jpg')center no-repeat;
+	margin-top: 20px;
+}
+
+.carousel-control-prev{
+    opacity: 1;
+}
+
+.form{
+	padding: 250px 150px;
+	height: 90px;
+	width: 50%;
+}
+
+.title{
+	background-color: rgba(193,37,37 , 0.8); 
+
+}
+.underTitle{
+	background-color: rgba(71,71,71 , 0.7); 
+}
+.word{
+	color: white;
+	padding: 40px;
+	letter-spacing: 0.15em;
+}
+.under{
+	color: white;
+	padding: 10px 40px;
+}
+
+.logo{
+	justify-content: center;
+	padding: 10px 110px;
+}
+
+.h2{
+	padding: 18px 110px;
+	text-decoration: none;
+	font-size: 20px;
+}
+.h21{
+	padding: 18px 90px;
+	text-decoration: none;
+	font-size: 20px;
+	font-weight: 600;
+}
+
+
+.row{
+	margin-right: -15px;
+    margin-left: -15px;
+}
+
+.white-box{
+	background-color: white;
+}
+.image1{
+	height:250px;
+	width: 400px;
+}
+.h7{
+	padding: 10px;
+	color: red;
+
+
+}
+h5{
+	margin-top: 20px;
+	padding:30px 0 0 40px;
+
+}
+i{
+	color: white;
+}
+
+
+
+
+
+
+
+*{
+	box-sizing: border-box;
+}
+.nav navbar-nav menu li{
+	color: black;
+}
+.main-container{
+	background-color: #eff3f8;
+}
+.main-container form{
+	background-color: white;
+}
+
+.result-list{
+	background-color: white;
+}
+.form-group select{
+	margin-left: 75px;
+	width: 250px;
+}
+.container h4{
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+.btn-group button{
+	margin-left: 100px;
+}
+.result-list-heading{
+	border-bottom: 1px solid  #eff3f8;
+	width: 95%;
+	margin-left: 25px;
+}
+.row span{
+	margin-left: 25px;
+}
+.result-list-row{
+	padding-top: 15px;
+	border-bottom: 1px solid  #eff3f8;
+}
+.row-heading a{
+	color: red;
+}
+.row-info a{
+	color: black;
+	font-weight: 500;
+}
