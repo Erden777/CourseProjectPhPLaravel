@@ -25,8 +25,7 @@
 </head>
 <body>
 
-  өзгертілді
-  sdfsdfsfs
+changes
         <?php
     
       // Переменные с формы
