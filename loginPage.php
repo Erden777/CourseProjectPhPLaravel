@@ -24,6 +24,9 @@
 	<title>Login</title>
 </head>
 <body>
+
+  өзгертілді
+  sdfsdfsfs
         <?php
     
       // Переменные с формы
