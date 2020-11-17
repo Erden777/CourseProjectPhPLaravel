@@ -24,6 +24,12 @@
 	<title>Admin</title>
 </head>
 <body>  
+  <?php 
+   session_start();
+   if(empty($_SESSION['user_id'])){
+    header("Location:http://localhost/Midka/loginPage.php");
+   }
+   ?>
     <?php
       require_once 'connection.php'; //
       // Переменные с формы
@@ -62,7 +68,7 @@
                 $query = mysqli_query($link,"INSERT INTO job (name, address, salary, schedule) VALUES ('$name','$address','$salary','$schedule')");
               }
         }
-        if(isset($_POST['update_name']) && isset($_POST['update_id'])){
+        if(isset($_POST['update_name_job']) && isset($_POST['update_id_job'])){
 
             $id = $_POST['update_id'];
             $name = $_POST['update_name'];
@@ -77,7 +83,7 @@
         }
         if(isset($_POST['delete_id'])){
             $id = $_POST['delete_id'];
-            $query ="DELETE FROM job WHERE id='$id'";
+            $query ="DELETE FROM company WHERE id='$id'";
             $result = mysqli_query($link, $query) or die("Ошибка " . mysqli_error($link)); 
             mysqli_close($link);
         }
@@ -155,48 +161,13 @@
 <hr class="my-4">  
 
 <div class="container  bg-light">
-    <h2 style="padding: 30px 0 0 0">Job List</h2>
+   <!--- <h2 style="padding: 30px 0 0 0">Job List</h2>
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#basicExampleModal" style="margin: 15px 0">
   Add new
-</button>
+</button>-->
 
 
     <br>
-    <table class="table">
-      <thead>
-        <tr>
-          <th scope="col">#</th>
-          <th scope="col">Name</th>
-          <th scope="col">Address</th>
-          <th scope="col">Salary</th>
-          <th scope="col">Schedule</th>
-          <th scope="col">Details</th>
-        </tr>
-      </thead>
-      <tbody>
-
-            <?php
-            
-                 $rows = mysqli_num_rows($query_jobs);
-          
-                for($i = 1; $i < $rows; ++$i){
-                    $row = mysqli_fetch_row($query_jobs);
-                    echo "<tr>";
-                        for($j = 0; $j < 5; $j++) echo "<td>$row[$j]</td>";
-                    echo "<input type='hidden' id='name_$row[0]' value='$row[1]'>";
-                    echo "<input type='hidden' id='address_$row[0]' value='$row[2]'>";
-                    echo "<input type='hidden' id='salary_$row[0]' value='$row[3]'>";
-                    echo "<input type='hidden' id='schedule_$row[0]' value='$row[4]'>";
-                    echo "<td><button onclick='updateJob($row[0])' class='btn btn-info btn-sm' data-toggle='modal' data-target='#UpdateJobModal' type='button'>Update</button>
-                                <button onclick='deleteJob($row[0])' class='btn btn-danger btn-sm' data-toggle='modal' data-target='#deleteJobModal' type='button'>Delete</button>
-                        </td>";
-                    echo "</tr>";
-                }
-          
-            ?>
-
-  </tbody>
-</table>
 </div>
 <!-- Button trigger modal -->
     
@@ -244,18 +215,311 @@
     </div>
   </div>
 </div>
+
+
+
+<?php
+require_once 'connection.php'; // подключаем скрипт
+ 
+// подключаемся к серверу
+$link = mysqli_connect($host, $user, $password, $database) 
+    or die("Ошибка " . mysqli_error($link));
+ 
+// выполняем операции с базой данных
+if(!empty($_POST["company_name"]) && !empty($_POST["address_company"]) && !empty($_POST["city"]) && !empty($_POST["email"]) && !empty($_POST["password"])){
+              $name_company = $_POST['company_name'];
+
+                $address_company = $_POST['address_company'];
+                $city = $_POST['city'];
+                $email = $_POST['email'];
+                $password = $_POST['password'];
+    $query = mysqli_query($link,"INSERT INTO company (id,name, address, city, email, password) VALUES (null,'$name_company','$address_company','$city','$email','$password')");
+  }
+
+
+           
+
+if(!empty($_POST["vc_name"]) && !empty($_POST["vc_req"])){
+            $vc_name = $_POST['vc_name'];
+            $vc_req = $_POST['vc_req'];
+            $cp_id = $_POST['cp_id'];
+            $vc_salary = $_POST['vc_salary'];
+    $query_vacancy = mysqli_query($link,"INSERT INTO vacancy (name, requirement, company_id , salary) VALUES ('$vc_name','$vc_req', '$cp_id' , '$vc_salary')");
+  }
+
+$query_vacancies = mysqli_query($link,"SELECT * FROM vacancy");
+
+$data_v = mysqli_fetch_all($query_vacancies);
+
+
+
+if(isset($_POST['update_name']) && isset($_POST['update_id'])){
+    
+    $id = $_POST['update_id'];
+     echo $id;
+    $name = $_POST['update_name'];
+       
+    $address = $_POST['update_address'];
+    $city = $_POST['update_city'];
+    $email = $_POST['update_email'];
+    $password = $_POST['update_password'];
+
+
+    $query ="UPDATE company SET name='$name', address='$address', city='$city', email='$email', password='$password'  WHERE id='$id'";
+    $result = mysqli_query($link, $query) or die("Ошибка " . mysqli_error($link)); 
+}
+$query_companies = mysqli_query($link,"SELECT * FROM company");
+$data_c = mysqli_fetch_all($query_companies);
+//$result = mysqli_query($link, $query_users) or die("Ошибка " . mysqli_error($link)); 
+//if($result)
+//{
+//    echo "Выполнение запроса прошло успешно";
+//    echo $result;
+//}
+ 
+// закрываем подключение
+mysqli_close($link);
+?>
+<div class="container  bg-light">
+  <div class="col-md-12 align-items-center">
+    <h2>Vacancy</h2>
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#basicExampleModal2">
+  Add new
+</button>
+    </div>
+    <br>
+    <table class="table ">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Name</th>
+      <th scope="col">Requirements</th>
+      <th scope="col">Company ID</th>
+    </tr>
+  </thead>
+
+  <tbody>
+  <?php
+        foreach ($data_v as $vacancy) {
+                ?>
+        <tr>
+            <td id="id_<?=vacancy[0]?>"> <?=$vacancy[0]?></td>
+            <td id="name_<?=vacancy[0]?>"> <?=$vacancy[2]?></td>
+            <td id="req_<?=vacancy[0]?>"> <?=$vacancy[1]?></td>
+            <td id="cp_id_<?=vacancy[0]?>"> <?=$vacancy[3]?></td>
+            <td>
+                <button onclick="updateJob(<?=$company[0]?>)" class='btn btn-info btn-sm' data-toggle='modal' data-target='#UpdateJobModal' type='button'>Update</button>
+                <button onclick="deleteJob(<?=$company[0]?>)" class='btn btn-danger btn-sm' data-toggle='modal' data-target='#deleteJobModal' type='button'>Delete</button>
+            </td>
+            
+        </tr>
+            <?php } ?>
+  </tbody>
+</table>
+</div>
+
+<div class="container  bg-light">
+  <div class="col-md-12 align-items-center">
+    <h2>Companies</h2>
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#basicExampleModal1">
+  Add new
+</button>
+    </div>
+    <br>
+    <table class="table ">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Name</th>
+      <th scope="col">Address</th>
+      <th scope="col">City</th>
+      <th scope="col">Email</th>
+      <th scope="col">Operations</th>
+    </tr>
+  </thead>
+
+  
+
+  <tbody>
+  <?php
+        foreach ($data_c as $company) {
+                ?>
+        <tr>
+            <td id="id_<?=company[0]?>"> <?=$company[0]?></td>
+            <td id="name_<?=company[0]?>"> <?=$company[1]?></td>
+            <td id="address_<?=company[0]?>"> <?=$company[2]?></td>
+            <td id="city_<?=company[0]?>"> <?=$company[3]?></td>
+            <td id="email_<?=company[0]?>"> <?=$company[4]?></td>
+            <td>
+                <button onclick="updateJob(<?=$company[0]?>)" class='btn btn-info btn-sm' data-toggle='modal' data-target='#UpdateJobModal' type='button'>Update</button>
+                <button onclick="deleteJob(<?=$company[0]?>)" class='btn btn-danger btn-sm' data-toggle='modal' data-target='#deleteJobModal' type='button'>Delete</button>
+            </td>
+            
+        </tr>
+
+
+
+            <?php } ?>
+  </tbody>
+</table>
+</div>
+  
+<!--Delete Modal -->
+<div class="modal fade" id="deleteJobModal" tabindex="-1" role="dialog" aria-labelledby="UpdateJobModalLable"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+      <form method="post">
+                <div class="form-group">
+                  <input type="hidden" name="delete_id" id="delete_id">
+                    <h5>Are you sure? ???</h5>
+                </div>
+            <div class="modal-footer">
+        <button class="btn btn-danger btn_delete">Delete job</button>
+        <button class="btn btn-info">Close</button>
+        </div>
+      </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="basicExampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add new job</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form method="post" action="">
+        <div class="modal-body">
+            <div class="form-group">
+                <label>Name</label>
+                <input type="text" class="form-control" name="title">
+            </div>
+            <div class="form-group">
+                <label>Address</label>
+                <input type="text" class="form-control" name="title">
+            </div>
+            <div class="form-group">
+            <label>Salary</label>
+            <input type="text" class="form-control" name="title">
+            </div>
+            <div class="form-group">
+            <label>Working hours</label>
+            <input type="text" class="form-control" name="title">
+            </div>
+        </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Save</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+<hr class="my-4">
+
+<!-- Modal for Add Companies -->
+<div class="modal fade" id="basicExampleModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel1">Add new company sd</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form method="post">
+      <div class="modal-body">
+                <div class="form-group">
+                  <label>Name</label>
+                  <input type="text" class="form-control" name="company_name">
+                </div>
+                <div class="form-group">
+                  <label>Address</label>
+                    <input type="text" class="form-control" name="address_company">
+                </div>
+              <div class="form-group">
+                <label>City</label>
+                <input type="text" class="form-control" name="city">
+              </div>
+              <div class="form-group">
+                <label>Email</label>
+                <input type="email" class="form-control" name="email">
+              </div>
+              <div class="form-group">
+                <label>Password</label>
+                <input type="password" class="form-control" name="password">
+              </div>
+            </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Add</button>
+      </div>
+    </form>
+    </div>
+  </div>
+</div>
+<hr class="my-4">
+
+<!-- Modal for Add new Vacancy -->
+<div class="modal fade" id="basicExampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel2">Add new Vacancy</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form method="post" action="">
+        <div class="modal-body">
+            <div class="form-group">
+                <label>Name</label>
+                <input type="text" class="form-control" name="vc_name">
+            </div>
+            <div class="form-group">
+                <label>Requirements</label>
+                <input type="text" class="form-control" name="vc_req">
+            </div>
+            <div class="form-group">
+                <label>Salary</label>
+                <input type="number" class="form-control" name="vc_salary">
+            </div>
+            <div class="form-group">
+            <label>Company id</label>
+            <input type="number" class="form-control" name="cp_id">
+            </div>
+          </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Add</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+<hr class="my-4">
+
+<!-- Modal for Edit Companies -->
 <div class="modal fade" id="UpdateJobModal" tabindex="-1" role="dialog" aria-labelledby="UpdateJobModalLable"
   aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="UpdateModaljobLable">Update Job</h5>
+        <h5 class="modal-title" id="UpdateModaljobLable">Update Company ost</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-      <form method="post">
+      <form method="post"  id="update_form" action="/Midka/adminPage.php">
                 <div class="form-group">
                   <input type="hidden" name="update_id" id="update_id">
                   <label for="update_name">Name</label>
@@ -265,21 +529,20 @@
                   <label for="update_address">Address</label>
                     <input type="text" class="form-control" name="update_address" id="update_address">
                 </div>
+                <div class="form-group">
+                  <label for="update_city">City</label>
+                    <input type="text" class="form-control" name="update_city" id="update_city">
+                </div>
               <div class="form-group">
-                <label for="update_salary">Salary</label>
-                <input type="number" class="form-control" name="update_salary" id="update_salary">
+                <label for="update_email">Email</label>
+                <input type="email" class="form-control" name="update_email" id="update_email">
               </div>
               <div class="form-group">
-                <label for="update_schedule">Schedule</label>
-                    <select name="update_schedule" class="form-control" id="update_schedule">
-                      <option>Full Day</option>
-                      <option>Shift Schedule</option>
-                      <option>Flexible schedule</option>
-                      <option>Remote work</option>
-                    </select>
+                <label for="update_password">Password</label>
+                <input type="password" class="form-control" name="update_password" id="update_password">
               </div>
             <div class="modal-footer">
-        <button type="submit" class="btn btn-primary">Save job</button>
+        <button class="btn btn-primary btn_update">Save</button>
         <button class="btn btn-danger">Close</button>
         </div>
       </form>
@@ -287,25 +550,7 @@
     </div>
   </div>
 </div>
-<div class="modal fade" id="deleteJobModal" tabindex="-1" role="dialog" aria-labelledby="UpdateJobModalLable"
-  aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-body">
-      <form method="post">
-                <div class="form-group">
-                  <input type="hidden" name="delete_id" id="delete_id">
-                    <h5>Are you sure?</h5>
-                </div>
-            <div class="modal-footer">
-        <button type="submit" class="btn btn-danger">Delete job</button>
-        <button class="btn btn-info">Close</button>
-        </div>
-      </form>
-      </div>
-    </div>
-  </div>
-</div>
+
 <br>
 <br>
 		<!-- Footer -->
@@ -376,7 +621,7 @@
   </div>
 </footer>
 
-
+<script src="assets/ajax.js"></script>
 </body>
 <!-- JS, Popper.js, and jQuery -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
@@ -388,14 +633,14 @@
         document.getElementById("update_id").value = id;
         document.getElementById("update_name").value =  document.getElementById("name_"+id).value;
         document.getElementById("update_address").value =  document.getElementById("address_"+id).value;
-        document.getElementById("update_salary").value =  document.getElementById("salary_"+id).value;
-        document.getElementById("update_schedule").value =  document.getElementById("schedule_"+id).value;
-        
+        document.getElementById("update_city").value =  document.getElementById("city_"+id).value;
+        document.getElementById("update_email").value =  document.getElementById("email_"+id).value;
+        document.getElementById("update_password").value =  document.getElementById("password_"+id).value;
     }
     const deleteJob = (id) => {
-        
         document.getElementById("delete_id").value = id;
 
     }
+</script>
 </script>
 </html>

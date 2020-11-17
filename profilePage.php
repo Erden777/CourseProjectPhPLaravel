@@ -8,69 +8,21 @@
 	<!-- CSS only -->
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
 <link rel="stylesheet" type="text/css" href="assets/css/style.css">
-
-<!-- CSS only -->
-
-<!-- Font Awesome -->
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
-<!-- Google Fonts Roboto -->
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
 <!-- JS, Popper.js, and jQuery -->
 <script src="https://use.fontawesome.com/142431c6ed.js"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
 <script src="/vender/js/bootstrap.min.js"></script>
-<meta charset="UTF-8">
-	<title>Login</title>
+	<title>Students and graduates</title>
 </head>
-<body>
-
-
-        <?php
     
-      // Переменные с формы
-        if(isset($_POST['email'])){
-            $email = $_POST['email'];
-            $pass = $_POST['pass'];
-        }
-
-
-      // Параметры для подключения
-      $db_host = "localhost"; 
-      $db_user = "root"; // Логин БД
-      $db_password = ""; // Пароль БД
-      $db_base = 'studentsgraduates'; // Имя БД
-      $db_table = "job_seeker"; // Имя Таблицы БД
-
-      // Подключение к базе данных
-      $mysqli = new mysqli($db_host, $db_user, $db_password, $db_base);
-      $link = mysqli_connect("localhost", "root", "", "studentsgraduates");
-
-      // Если есть ошибка соединения, выводим её и убиваем подключение
-      if ($mysqli->connect_error) {
-
-          die('Ошибка : ('. $mysqli->connect_error .') '. $mysqli->connect_error);
-      }
-
-        if(!empty($_POST['email']) && !empty($_POST['pass']))
-        {
-            // Вытаскиваем из БД запись, у которой логин равняеться введенному
-            $query = mysqli_query($link,"SELECT id, email, password FROM job_seeker WHERE email='".mysqli_real_escape_string($link,$_POST['email'])."' LIMIT 1");
-            $data = mysqli_fetch_assoc($query);
-
-            // Сравниваем пароли
-            if($data['password'] == ($_POST['pass']))
-            {
-              session_start();
-              $_SESSION['user_id'] = $data['id'];
-                // Ставим куки
-                setcookie("user_id", $data['id'], time()+60*60*24*30, "/");
-
-                // Переадресовываем браузер на страницу проверки нашего скрипта
-                header("Location:http://localhost/Midka/profilePage.php");
-                }
-        }
-    ?>
+<body>
+	<?php 
+	 session_start();
+	 if(empty($_SESSION['user_id'])){
+	 	header("Location:http://localhost/Midka/loginPage.php");
+	 }
+	 ?>
 		<div class="header frontpage" style="margin-top: 30px">
 			<div class="container">
 
@@ -82,7 +34,7 @@
 
               <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
-                  <li class="nav-item">
+                  <li class="nav-item active">
                     <a class="nav-link" href="index.html">Home</a>
                   </li>
                   <li class="nav-item">
@@ -110,78 +62,115 @@
               </div>
             </nav>
           </div>
-        <br>
-		<div class="container-fluid" style="background-color:#474747; ">
-			<div class="container">
-				
-				<ul class="nav nav-pills lighten-2 mx-0 mb-0 mt-0 nav-fill">
+      </div>
 
-				  <li class="nav-item">
-				    <a class="nav-link py-4 " href="#">Students and graduates</a>
-				  </li>
-				  <li class="nav-item">
-				    <a class="nav-link py-4	" href="#">Industry Metoring Program</a>
-				  </li>
-				  <li class="nav-item">
-				    <a class="nav-link py-4" href="#">Employers and recuriters</a>
-				  </li>
-				  <li class="nav-item">
-				    <a class="nav-link py-4 " href="#">Unitempts</a>
-				  </li>
-				   <li class="nav-item">
-				    <a class="nav-link py-4 " href="#">Academic staff</a>
-				  </li>
-				   <li class="nav-item">
-				    <a class="nav-link py-4 " href="contact%20us.html">Contact us</a>
-				  </li>
+		<br><br>
+<div class="container well span6 offset-2">
+	<?php
+        	 
+        	  $link = mysqli_connect("localhost", "root", "", "studentsgraduates");
 
-				</ul>
-			</div>
-		</div>
+        	  if(isset($_POST['user_name'])){
+        	  	$id = $_POST['user_id'];
+        	  	$name = $_POST['user_name'];
+        	  	$email = $_POST['user_email'];
+        	  	$password = $_POST['user_password'];
+        	  	$tel = $_POST['user_tel'];
+        	  	$url = $_POST['picture_Url'];
+        	  	$query ="UPDATE job_seeker SET name='$name', email='$email', tel_number='$tel', password='$password' , picture_Url ='$url' WHERE id='$id'";
+        	  	$result = mysqli_query($link, $query) or die("Ошибка " . mysqli_error($link)); 
+
+        	  }
+        		$query = mysqli_query($link,"SELECT id,name , email, tel_number ,picture_Url, password FROM job_seeker WHERE id='".mysqli_real_escape_string($link,$_SESSION['user_id'])."' LIMIT 1");
+           	 $data = mysqli_fetch_assoc($query);
+
+        	 ?>
+	<div class="row">
+        <div class="col-md-2" >
+		    <img width="160px" height="160px" src="<?php echo $data['picture_Url']; ?>" class="img-circle">
+        </div>
+
+        
+        <div class="col-md-7">
+        	
+            <h3><?php echo $data['name']; ?></h3>
+            <h6>Email: <?php echo $data['email']; ?> </h6>
+            <h6>Tel-number: <?php echo $data['tel_number']; ?></h6>
+            <h6>Old: 19 Year</h6>
+           
+        </div>
+       
 	</div>
+	<div class="offset-2 col-md-3">
+           <button onclick="updateUser(<?=$data['id']?>)" class='btn btn-info btn-sm' data-toggle='modal' data-target='#UpdateJobModal' type='button'>Update</button>
+        </div>
+</div>
+<!-- Modal for Edit Companies -->
+<div class="modal fade" id="UpdateJobModal" tabindex="-1" role="dialog" aria-labelledby="UpdateJobModalLable"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="UpdateModaljobLable">Edit profile</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      <form method="post"  id="update_form">
+                <div class="form-group">
+                  <input type="hidden" name="user_id" id="user_id">
+                  <label for="update_name">Name</label>
+                  <input type="text" class="form-control" name="user_name" id="user_name" value="<?php echo $data['name']; ?>">
+                </div>
+                <div class="form-group">
+                  <label for="update_address">Telephone</label>
+                    <input type="text" class="form-control" name="user_tel" id="user_tel" value="<?php echo $data['tel_number']; ?>">
+                </div>
+                <div class="form-group">
+                <label for="update_password">Picture URL</label>
+                <input type="text" class="form-control" name="picture_Url" id="picture_Url" value="<?php echo $data['picture_Url']; ?>">
+              </div>
+                
+              <div class="form-group">
+                <label for="update_email">Email</label>
+                <input type="email" class="form-control" name="user_email" id="user_email" value="<?php echo $data['email']; ?>">
+              </div>
+              <div class="form-group">
+                <label for="update_password">Password</label>
+                <input type="password" class="form-control" name="user_password" id="user_password" value="<?php echo $data['password']; ?>">
+              </div>
+            <div class="modal-footer">
+        <button class="btn btn-primary btn_update">Save</button>
+        <button class="btn btn-danger">Close</button>
+        </div>
+      </form>
+      </div>
+    </div>
+  </div>
+</div>
 
-  <div class="container">
-
-<hr>
-
-<div class="card bg-light">
-<article class="card-body mx-auto" style="max-width: 400px;">
-	<h4 class="card-title mt-3 text-center">Login</h4>
-    <br>
-	<form method="post" action="">
-    <div class="form-group input-group">
-    	<div class="input-group-prepend">
-		    <span class="input-group-text"> <i class="fa fa-envelope"></i> </span>
-		 </div>
-        <input name="email" class="form-control" placeholder="Email" type="email">
-    </div> 
-    <div class="form-group input-group">
-    	<div class="input-group-prepend">
-		    <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
-		</div>
-        <input class="form-control" placeholder="Password" type="password" name="pass">
-    </div> <!-- form-group// -->                                     
-    <div class="form-group">
+<br>
+<br>
 
 
+<script type="text/javascript">
+    const updateUser = (id) => {
+        
+        document.getElementById("user_id").value = id;
+        document.getElementById("user_name").value =  document.getElementById("name_"+id).value;
+        document.getElementById("user_tel").value =  document.getElementById("tel_number_"+id).value;
+        document.getElementById("user_email").value =  document.getElementById("email_"+id).value;
+        document.getElementById("user_password").value =  document.getElementById("password_"+id).value;
+        document.getElementById("picture_Url").value =  document.getElementById("picture_Url"+id).value;
+    }
 
-        <button type="submit" class="btn btn-primary btn-block"> Login </button>
-    </div> <!-- form-group// --> 
-    <p class="text-center"><a href="../Midka/exx.php" style="color: black">Don't have an account?</a></p> 
-</form>
-    
+    const deleteJob = (id) => {
+        document.getElementById("delete_id").value = id;
 
+    }
 
-
-
-</article>
-</div> <!-- card.// -->
-
-</div> 
-<!--container end.//-->
-
-<br><br>
-
+		</script>
 
 		<!-- Footer -->
 <footer class="page-footer font-small mdb-color pt-4" style="background-color: #474747;">
@@ -243,7 +232,9 @@
       <div class="col-md-7 col-lg-8">
         <p class="text-center text-md-left" style="color: white;">©️ 2020 Copyright:
           <a href="#">
-            <strong> Employment.com</strong>
+            <strong>Employment.com</strong>
+            <strong>Employment.com</strong>
+              
           </a>
         </p>
       </div>
@@ -257,4 +248,5 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    <script></script>
 </html>

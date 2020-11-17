@@ -8,69 +8,15 @@
 	<!-- CSS only -->
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
 <link rel="stylesheet" type="text/css" href="assets/css/style.css">
-
-<!-- CSS only -->
-
-<!-- Font Awesome -->
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
-<!-- Google Fonts Roboto -->
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
 <!-- JS, Popper.js, and jQuery -->
 <script src="https://use.fontawesome.com/142431c6ed.js"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
 <script src="/vender/js/bootstrap.min.js"></script>
-<meta charset="UTF-8">
-	<title>Login</title>
+	<title>Students and graduates</title>
 </head>
-<body>
-
-
-        <?php
     
-      // Переменные с формы
-        if(isset($_POST['email'])){
-            $email = $_POST['email'];
-            $pass = $_POST['pass'];
-        }
-
-
-      // Параметры для подключения
-      $db_host = "localhost"; 
-      $db_user = "root"; // Логин БД
-      $db_password = ""; // Пароль БД
-      $db_base = 'studentsgraduates'; // Имя БД
-      $db_table = "job_seeker"; // Имя Таблицы БД
-
-      // Подключение к базе данных
-      $mysqli = new mysqli($db_host, $db_user, $db_password, $db_base);
-      $link = mysqli_connect("localhost", "root", "", "studentsgraduates");
-
-      // Если есть ошибка соединения, выводим её и убиваем подключение
-      if ($mysqli->connect_error) {
-
-          die('Ошибка : ('. $mysqli->connect_error .') '. $mysqli->connect_error);
-      }
-
-        if(!empty($_POST['email']) && !empty($_POST['pass']))
-        {
-            // Вытаскиваем из БД запись, у которой логин равняеться введенному
-            $query = mysqli_query($link,"SELECT id, email, password FROM job_seeker WHERE email='".mysqli_real_escape_string($link,$_POST['email'])."' LIMIT 1");
-            $data = mysqli_fetch_assoc($query);
-
-            // Сравниваем пароли
-            if($data['password'] == ($_POST['pass']))
-            {
-              session_start();
-              $_SESSION['user_id'] = $data['id'];
-                // Ставим куки
-                setcookie("user_id", $data['id'], time()+60*60*24*30, "/");
-
-                // Переадресовываем браузер на страницу проверки нашего скрипта
-                header("Location:http://localhost/Midka/profilePage.php");
-                }
-        }
-    ?>
+<body>
 		<div class="header frontpage" style="margin-top: 30px">
 			<div class="container">
 
@@ -82,7 +28,7 @@
 
               <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
-                  <li class="nav-item">
+                  <li class="nav-item active">
                     <a class="nav-link" href="index.html">Home</a>
                   </li>
                   <li class="nav-item">
@@ -110,78 +56,44 @@
               </div>
             </nav>
           </div>
-        <br>
-		<div class="container-fluid" style="background-color:#474747; ">
-			<div class="container">
-				
-				<ul class="nav nav-pills lighten-2 mx-0 mb-0 mt-0 nav-fill">
+      </div>
 
-				  <li class="nav-item">
-				    <a class="nav-link py-4 " href="#">Students and graduates</a>
-				  </li>
-				  <li class="nav-item">
-				    <a class="nav-link py-4	" href="#">Industry Metoring Program</a>
-				  </li>
-				  <li class="nav-item">
-				    <a class="nav-link py-4" href="#">Employers and recuriters</a>
-				  </li>
-				  <li class="nav-item">
-				    <a class="nav-link py-4 " href="#">Unitempts</a>
-				  </li>
-				   <li class="nav-item">
-				    <a class="nav-link py-4 " href="#">Academic staff</a>
-				  </li>
-				   <li class="nav-item">
-				    <a class="nav-link py-4 " href="contact%20us.html">Contact us</a>
-				  </li>
-
-				</ul>
-			</div>
-		</div>
+		<br><br>
+<div class="container well span6 offset-2">
+	<div class="row">
+        <div class="col-md-2" >
+		    <img src="https://secure.gravatar.com/avatar/de9b11d0f9c0569ba917393ed5e5b3ab?s=140&r=g&d=mm" class="img-circle">
+        </div>
+        
+        <div class="col-md-7">
+        	<?php
+        	
+        		echo "string";
+        	 ?>
+            <h3>User Name</h3>
+            <h6>Email: MyEmail@servidor.com</h6>
+            <h6>Ubication: Colombia</h6>
+            <h6>Old: 1 Year</h6>
+            <h6><a href="#">More... </a></h6>
+        </div>
+       
 	</div>
-
-  <div class="container">
-
-<hr>
-
-<div class="card bg-light">
-<article class="card-body mx-auto" style="max-width: 400px;">
-	<h4 class="card-title mt-3 text-center">Login</h4>
-    <br>
-	<form method="post" action="">
-    <div class="form-group input-group">
-    	<div class="input-group-prepend">
-		    <span class="input-group-text"> <i class="fa fa-envelope"></i> </span>
-		 </div>
-        <input name="email" class="form-control" placeholder="Email" type="email">
-    </div> 
-    <div class="form-group input-group">
-    	<div class="input-group-prepend">
-		    <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
-		</div>
-        <input class="form-control" placeholder="Password" type="password" name="pass">
-    </div> <!-- form-group// -->                                     
-    <div class="form-group">
+	<div class="offset-2">
+            <div class="btn-group">
+                <a class="btn dropdown-toggle btn-info" data-toggle="dropdown" href="#">
+                    Action 
+                    <span class="icon-cog icon-white"></span><span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="#"><span class="icon-wrench"></span> Modify</a></li>
+                    <li><a href="#"><span class="icon-trash"></span> Delete</a></li>
+                </ul>
+            </div>
+        </div>
+</div>
 
 
-
-        <button type="submit" class="btn btn-primary btn-block"> Login </button>
-    </div> <!-- form-group// --> 
-    <p class="text-center"><a href="../Midka/exx.php" style="color: black">Don't have an account?</a></p> 
-</form>
-    
-
-
-
-
-</article>
-</div> <!-- card.// -->
-
-</div> 
-<!--container end.//-->
-
-<br><br>
-
+		
 
 		<!-- Footer -->
 <footer class="page-footer font-small mdb-color pt-4" style="background-color: #474747;">
@@ -243,7 +155,9 @@
       <div class="col-md-7 col-lg-8">
         <p class="text-center text-md-left" style="color: white;">©️ 2020 Copyright:
           <a href="#">
-            <strong> Employment.com</strong>
+            <strong>Employment.com</strong>
+            <strong>Employment.com</strong>
+              
           </a>
         </p>
       </div>
@@ -257,4 +171,5 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    <script></script>
 </html>

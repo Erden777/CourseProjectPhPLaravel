@@ -19,7 +19,7 @@
 
               if(!empty($_POST["name"])){
 
-                $query = mysqli_query($link,"INSERT INTO job_seeker VALUES (null ,'$name','$contact','$email','$password')");
+                $query = mysqli_query($link,"INSERT INTO job_seeker VALUES (null ,'$name','$contact','$email','$pass','https://karateinthewoodlands.com/wp-content/uploads/2017/09/default-user-image.png')");
               }
            
              header("Location:http://localhost/Midka/adminPage.php");
